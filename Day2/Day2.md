@@ -12,6 +12,7 @@ As instruções do Dockerfile vai gerando diversas camadas dentro da imagem.
 
 ***INSTRUÇÕES***
  - `FROM`- De onde partirá a minha imagem, que é a minha imagem base
+
  - `RUN` - Quando eu preciso executar/rodar algum comando quando minha imagem está sendo criada/buildada
     - Cada `RUN` significa uma nova camada na imagem
 
@@ -26,6 +27,8 @@ As instruções do Dockerfile vai gerando diversas camadas dentro da imagem.
 - `WORKDIR` - Path onde será executado o "entryPoint" do container
 
 - `ENV` - Comando para fornecimento de variáveis de ambiente
+
+- `LABEL` - Permite passar um rótulo/metada, para auxiliar na organização da imagem
 
 - `ENTRYPOINT` - Indica qual é o ***principal processo***, ou seja, o processo que se ele morrer o container morrerá tb
     - Quando eu tenho um `ENTRYPOINT` setado, o `CMD` será sempre relativo ao que está sendo executado no entryPoint
