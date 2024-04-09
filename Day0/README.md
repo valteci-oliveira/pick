@@ -38,7 +38,7 @@ Segui o processo de instalação padrão informado no site da [Vagrant](https://
 
 <br>
 
-### Ambiente Debian ( Abortado :bomb: ) 
+### Ambiente Debian ( :bomb: Abortado  ) 
 
     vagrant init debian/jessie64
     vagrant up
@@ -55,10 +55,24 @@ Inicialmente eu realizar a instalação do vagrantBox da distribuição [Debian]
 
 <br>
 
-### Ambiente Ubuntu ( Sucesso :white_check_mark:)
+### Ambiente Ubuntu ( :white_check_mark: Sucesso )
 
     vagrant init bento/ubuntu-22.04
     vagrant up
     vagrant ssh
 
-<br> 
+Uma vez dentro da VM iniciei o processo de instalação do Docker. <br>
+Como eu não era usuário `root` da máquina precisei executar os passos abaixo: 
+
+1. Setar uma nova senha para o root (não consegui identificar a senha que veio por default na VM)
+    - `sudo passwd root` - [Referência](https://stackoverflow.com/questions/25758737/vagrant-login-as-root-by-default) 
+
+2. Instalar o Docker via curl
+    - `curl -fsSL https://get.docker.com/ | bash`
+
+3. Instalar ferramenta para permitir o Docker ser utilizado sem ser via usuário root
+    - `dockerd-rootless-setuptool.sh install`
+
+<br>
+
+Feito isso o setup está criado e pronto para utilização!   VAMOOOO!!
