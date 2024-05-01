@@ -76,4 +76,11 @@ Comando para permitir enxugar o tamanho da imagem de container
 ***IMPORTANTE:*** Para eu passar valor para um argumento via comando de `docker image build` eu utilizo o parâmetro `--build-arg`
 - Exemplo: `docker image build -t go-custom:4.0 --build-arg GIROPOPS=girus .`
 
->***TRICK:*** É possível passar o valor de um ARG para uma ENV durante o processo de criação da imagem, ou seja, deste forma o valor do ARG fornecido no build estará disponível dentro da imagem/container na respectiva variárel de ambiente criada (vide EXEMPLO 009 do Dockerfile)
+>***TRICK:*** É possível passar o valor de um ARG para uma ENV durante o processo de criação da imagem, ou seja, deste forma o valor do ARG fornecido no build estará disponível dentro da imagem/container na respectiva variárel de ambiente criada (vide EXEMPLO 009 - Dockerfile)
+
+<br>
+
+## VOLUME
+Indica uma forma de persistir dentro do container, ou seja, caso o container seja parado os dados seguirão persistidos **no HOST** para utilização quando o container for novamente iniciado. (vide EXEMPLO 010 - Dockerfile )
+
+>**IMPORTANTE:** Os dados ficarão persistidos no host no path indicado no `Mounts -> Source` das configuraçoes do container (configurações que podem ser acessadas via `docker container inspect`) 

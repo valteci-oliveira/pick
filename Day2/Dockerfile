@@ -162,3 +162,27 @@ ARG GIROPOPS="Strigus"
 ENV GIROPOPSENV=$GIROPOPS
 RUN echo "O giropops é: $GIROPOPS"
 CMD ["/app/hello"]
+
+# ===================================
+#           VOLUME
+# ===================================
+
+# #############
+# EXEMPLO 010
+# #############
+# 1. Inclusão da instrução VOLUME indicando o diretório do container que deverá ser persistido (no host)
+
+FROM golang:1.18 as imageBuild4
+WORKDIR /app
+COPY . ./
+RUN go mod init hello
+RUN go build -o /app/hello
+
+FROM alpine:3.15.9
+COPY --from=imageBuild4 /app/hello /app/hello
+ENV APP="hello_world"
+ARG GIROPOPS="Strigus"
+ENV GIROPOPSENV=$GIROPOPS
+RUN echo "O giropops é: $GIROPOPS"
+VOLUME /app/dados
+CMD ["/app/hello"]
