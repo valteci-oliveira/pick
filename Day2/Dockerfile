@@ -65,6 +65,40 @@ ENTRYPOINT ["nginx"]
 CMD ["-g", "daemon off;"]
 HEALTHCHECK --timeout=2s CMD curl -f localhost || exit 1
 
+# ===================================
+#           MULTISTAGE
+# ===================================
+
+# #############
+# EXEMPLO 001
+# #############
+# 1. Inclusão da image do `golang` no from
+# 2. Criação da instrução `COPY` pegando todo o conteúdo do diretório origem ( . ) para o destino ( ./ )
+# 2.1 Neste cenário o COPY pegará todo o conteúdo do diretório do `Dockerfile` e enviar para o diretório raiz do container (diretório informado no WORKDIR)
+
+FROM golang:1.18
+WORKDIR /app
+COPY . ./
+RUN go mod init hello
+RUN go build -o /app/hello
+CMD ["/app/hello"]
 
 
+# #############
+# EXEMPLO 002
+# #############
+# 1. Inclusão do comando "as" na primeira instrução FROM
+# 1.1 Este comando indica que agora o produto deste primeiro bloco do Dockerfile será uma imagem de nome "imageBuild"
+# 2. Inclusão de nova instrução FROM indicando uma nova seção do Dockerfile e sua imagem base
+# 2.1 Isso indica que agora existe uma MULTISTAGE e que tudo acima se refere à primeira Stage e tudo que está abaixo à segunda STAGE
+# 3. Inclusão da instrução COPY copiando informações da primeira stage para a segunda
+# 3.1 O comando "--from" indica stage/imagem de origem onde estou buscando a respectiva informação
+FROM golang:1.18 as imageBuild
+WORKDIR /app
+COPY . ./
+RUN go mod init hello
+RUN go build -o /app/hello
 
+FROM alpine:3.15.9
+COPY --from=imageBuild /app/hello /app/hello
+CMD ["/app/hello"]

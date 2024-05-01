@@ -12,6 +12,7 @@ As instruções do Dockerfile vai gerando diversas camadas dentro da imagem.
 
 ***INSTRUÇÕES***
  - `FROM`- De onde partirá a minha imagem, que é a minha imagem base
+    > **IMPORTANTE**: Por questões de segurança, é SEMPRE IMPORTANTE colocar a versão da imagem que eu quero baixar, NUNCA deixar sem nada porque sem nada virá sempre a `latest` o que poderá gerar falhar na minha app;
 
  - `RUN` - Quando eu preciso executar/rodar algum comando quando minha imagem está sendo criada/buildada
     - Cada `RUN` significa uma nova camada na imagem
@@ -58,3 +59,9 @@ As instruções do Dockerfile vai gerando diversas camadas dentro da imagem.
     - `:3.0` - Para indicar a versão da imagem
     - `.` - Indica para o build que a localização `Dockerfile`, no caso do `.` indica que o arquivo está no mesmo diretório onde está rodando o `docker build`
 
+
+## MULTISTAGE
+Comando para permitir enxugar o tamanho da imagem de container
+- O multi-stage nada mais é do que a possibilidade de você criar uma espécie de pipeline em nosso dockerfile, podendo inclusive ter duas entradas FROM.
+- Multistage é muito utilizado em cenários onde eu preciso compilar uma determinada imagem, mas não quero/preciso levar todas as libs/componentes utilizados apenas no build.
+    - Por Exemplo: Em um cenário onde preciso buildar uma aplicação em **golang** eu posso realizar o build da app na primeira imagem e utilizar o MULTISTAGE para criar a segunda imagem (imagem que de fato utilizarei para criar os containers) contendo apenas os artefatos do build da app **golang** (vide exemplo 001 na seção `Multistage` no arquivo Dockerfile)
