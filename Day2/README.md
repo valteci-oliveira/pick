@@ -65,3 +65,15 @@ Comando para permitir enxugar o tamanho da imagem de container
 - O multi-stage nada mais é do que a possibilidade de você criar uma espécie de pipeline em nosso dockerfile, podendo inclusive ter duas entradas FROM.
 - Multistage é muito utilizado em cenários onde eu preciso compilar uma determinada imagem, mas não quero/preciso levar todas as libs/componentes utilizados apenas no build.
     - Por Exemplo: Em um cenário onde preciso buildar uma aplicação em **golang** eu posso realizar o build da app na primeira imagem e utilizar o MULTISTAGE para criar a segunda imagem (imagem que de fato utilizarei para criar os containers) contendo apenas os artefatos do build da app **golang** (vide exemplo 001 na seção `Multistage` no arquivo Dockerfile)
+
+
+## ARG e ENV
+- `ARG` - Variável válida no momento de BUILD
+- `ENV` - Variável disponibilizada como `VARIÁVEL DE AMBIENTE` dentro do container
+
+<br>
+
+***IMPORTANTE:*** Para eu passar valor para um argumento via comando de `docker image build` eu utilizo o parâmetro `--build-arg`
+- Exemplo: `docker image build -t go-custom:4.0 --build-arg GIROPOPS=girus .`
+
+>***TRICK:*** É possível passar o valor de um ARG para uma ENV durante o processo de criação da imagem, ou seja, deste forma o valor do ARG fornecido no build estará disponível dentro da imagem/container na respectiva variárel de ambiente criada (vide EXEMPLO 009 do Dockerfile)

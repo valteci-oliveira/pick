@@ -70,7 +70,7 @@ HEALTHCHECK --timeout=2s CMD curl -f localhost || exit 1
 # ===================================
 
 # #############
-# EXEMPLO 001
+# EXEMPLO 005
 # #############
 # 1. Inclusão da image do `golang` no from
 # 2. Criação da instrução `COPY` pegando todo o conteúdo do diretório origem ( . ) para o destino ( ./ )
@@ -85,7 +85,7 @@ CMD ["/app/hello"]
 
 
 # #############
-# EXEMPLO 002
+# EXEMPLO 006
 # #############
 # 1. Inclusão do comando "as" na primeira instrução FROM
 # 1.1 Este comando indica que agora o produto deste primeiro bloco do Dockerfile será uma imagem de nome "imageBuild"
@@ -101,4 +101,64 @@ RUN go build -o /app/hello
 
 FROM alpine:3.15.9
 COPY --from=imageBuild /app/hello /app/hello
+CMD ["/app/hello"]
+
+
+# ===================================
+#           ARG e ENV
+# ===================================
+
+# #############
+# EXEMPLO 007
+# #############
+# 1. Inclusão da instrução ENV indicando as variáveis de ambiente
+
+FROM golang:1.18 as imageBuild1
+WORKDIR /app
+COPY . ./
+RUN go mod init hello
+RUN go build -o /app/hello
+
+FROM alpine:3.15.9
+COPY --from=imageBuild1 /app/hello /app/hello
+ENV APP="hello_world"
+CMD ["/app/hello"]
+
+
+# #############
+# EXEMPLO 008
+# #############
+# 1. Inclusão da instrução ARG indicando o argumento a ser criado no BUILD
+# 2. Inclusão da instrução RUN utilizando o ARG criado
+
+FROM golang:1.18 as imageBuild2
+WORKDIR /app
+COPY . ./
+RUN go mod init hello
+RUN go build -o /app/hello
+
+FROM alpine:3.15.9
+COPY --from=imageBuild2 /app/hello /app/hello
+ENV APP="hello_world"
+ARG GIROPOPS="Strigus"
+RUN echo "O giropops é: $GIROPOPS"
+CMD ["/app/hello"]
+
+# #############
+# EXEMPLO 009
+# #############
+# 1. Inclusão de nova instrução ENV criado a variável "GIRIPOPSENV" e setando o valor dela com o ARG "GIRIPOPS"
+
+FROM golang:1.18 as imageBuild3
+WORKDIR /app
+COPY . ./
+RUN go mod init hello
+RUN go build -o /app/hello
+
+FROM alpine:3.15.9
+COPY --from=imageBuild3 /app/hello /app/hello
+ENV APP="hello_world"
+ARG GIROPOPS="Strigus"
+ENV GIROPOPSENV=$GIROPOPS
+RUN echo "O giropops é: $GIROPOPS"
 CMD ["/app/hello"]
