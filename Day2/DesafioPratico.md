@@ -64,3 +64,39 @@ pip install --upgrade Flask
 - O Redis precisa ser um container
 
 Dica: Preste atenção no uso de variável de ambiente, precisamos ter a variável REDIS_HOST no container. Use sua criatividade!
+
+
+
+RESOLUCA
+
+>
+FROM ubuntu:20.04
+RUN apt-get update
+RUN apt-get install -y python3.8
+RUN apt-get install -y python3-pip && apt-get install -y git
+WORKDIR /app
+RUN git clone https://github.com/badtuxx/giropops-senhas.git
+RUN mv giropops-senhas/* .  &&  rm -rf giropops-senhas/
+RUN pip3 install --no-cache-dir -r requirements.txt && pip3 install --upgrade Flask
+ENV REDIS_HOST=redis-desafio-day2
+ENTRYPOINT ["python3"]
+CMD ["-m", "flask", "run", "--host=0.0.0.0"]
+
+
+
+1. Criação da network para comunicação entre os containers (app e redis)
+- `docker network create desafio-day2-network`
+
+2. Criação do container do redis (com conectividade ao container do app)
+- `docker container run -d --name redis-desafio-day2 --network desafio-day2-network redis`
+
+3. Build da imagem do app
+- `docker image build -t valtecioliveira/linuxtips-giropops-senhas:1.0 .`
+
+4. Push da imagem para o Docker Registry
+- `docker push valtecioliveira/linuxtips-giropops-senhas:1.0`
+
+5. Criação do container do app (com conectividade ao container do redis)
+- `docker container run -d -p 5000:5000 --network desafio-day2-network valtecioliveira/linuxtips-giropops-senhas:1.0`
+
+>  docker container stop $(docker container ls -a -q)
