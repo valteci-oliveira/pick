@@ -33,9 +33,21 @@
     - `docker volume inspect [NOME-VOLUME]` <br>
     - `docker volume inspect --format '{{ .Mountpoint }}' nome-volume` -> Inspect com filtro para retornar somente o path do volume
 
+    <br>
+
     **IMPORTANTE**
-    - No caso de volumes do time `volume`, se vc criar um arquivo em um determinado volume e se o volume for excluído, então o arquivo será apagado <br>
+    - No caso de volumes do time `volume`, se vc criar um arquivo em um determinado volume e se o volume for excluído, então o arquivo será apagado 
+    
+    <br>
 
     - **EXEMPLOS**
     - `docker run -it --name testando-volumes --mount type=volume,source=nome-volume,target=/local-container-volume debian`
         - Caso o volume não exista o volume será criado automaticamente
+
+    <br>
+
+    - **MODO MENOS VERBOSO**
+    Através da opção `-v` é possível realizar a criação do volumes dentro do container de uma forma menos verbosa
+    
+    - **EXEMPLO:**
+        - `docker container run -d --name web-2 -v nome-volume2:/local-container-volume -p 8083:80 nginx`
